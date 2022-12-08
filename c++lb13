@@ -1,0 +1,229 @@
+#include <iostream>
+#include <cstdlib>
+#include <string>
+using namespace std;
+
+typedef enum { pink = 1, blue, white, black, brown } colors;
+
+string printColor(colors colo) {
+    if (colo == pink)  return "pink";
+    else if (colo == blue)  return "blue";
+    else if (colo == white) return "white";
+    else if (colo == brown) return "brown";
+    else return "black";
+}
+
+
+
+struct book {
+    string name;
+    int release;
+    string author;
+    colors colo;
+    int score[5];
+};
+
+void lib(struct book library[5]);
+string find(struct book library[5]);
+string fc(struct book library[5]);
+
+int main() {
+    setlocale(LC_ALL, "Rus");
+    book library[5] = {
+        {"the world", 1992, "palkin", black, {2,3,5,4,3}},
+        {"sky", 1345, "gogol", pink, {6,8,4,3,6}},
+        {"cook", 1898, "mahov", white, {3,5,7,2,2}},
+        {"undeground", 1666, "lolov", brown, {1,3,4,2,1}},
+
+    };
+
+
+    string n;
+    cout << "введите название книги" << endl;
+    cin.ignore();
+    getline(cin, n);
+    library[4].name = n;
+
+    int y;
+    cout << endl << "введите год книги" << endl;
+    cin >> y;
+    library[4].release = y;
+
+    string u;
+    cout << endl << "введите имя автора" << endl;
+    cin.ignore();
+    getline(cin, u);
+    library[4].author = u;
+
+
+    cout << endl << "введите цвет :\n1 - розовый\n2 - голубой\n3 - белый\n4 - черный\n5 - коричневый" << endl;
+
+    int fbook;
+    cin >> fbook;
+
+    if (fbook == 1)
+        library[4].colo = pink;
+    else if (fbook == 2)
+        library[4].colo = blue;
+    else if (fbook == 3)
+        library[4].colo = white;
+    else if (fbook == 4)
+        library[4].colo = black;
+    else library[4].colo = brown;
+
+
+
+    cout << endl << "введите массив оценок" << endl;
+    for (int i = 0; i < 5; i++) {
+        cin >> library[4].score[i];
+        cout << endl;
+    }
+
+    for (int i = 0; i < 5; i++) {
+        cout << library[i].name << endl << library[i].release << endl << library[i].author << endl << library[i].colo << endl;
+        for (int j = 0; j < 5; j++) {
+            cout << library[i].score[j] << endl;
+        }
+        cout << endl;
+    }
+
+    int a;
+    cout << "Введите номер задания:" << "\n" << "1. функция 1" << "\n" << "2. функция 2" << "\n"
+        << "3. функция 3" << "\n" << "\n4. выход \n";
+    cin >> a;
+    while (cin.fail() || a > 5 || a < 1)
+    {
+        cout << "Ошибка ввода!Повторите!\n";
+        cin.clear();
+        cin.ignore(32767, '\n');
+        cin >> a;
+        cout << endl;
+    }
+    bool k = 0;
+    while (k != 1) {
+
+
+        switch (a) {
+        case 1:
+        {
+            cout << "книги, у которых средняя оценка не меньше 4,0: \n";
+            lib(library);
+            break;
+        }
+        case 2: {
+            string ff = find(library);
+            cout << endl << "книга автора, которую вы искали: " << endl << ff << endl;
+
+            break;
+        }
+        case 3: {
+            cout << fc(library) << endl;
+            break;
+        }
+        case 4: {
+            cout << "выход из программы...";
+        default:   k = 1;
+
+
+        }
+
+        }
+        if (k == 1) {
+            break;
+        }
+        else {
+            cout << "Введите номер задания:" << endl;
+            cin >> a;
+            while (cin.fail() || a > 5 || a < 1)
+            {
+                cout << "Ошибка ввода!Повторите!\n";
+                cin.clear();
+                cin.ignore(32767, '\n');
+                cin >> a;
+                cout << endl;
+            }
+        }
+
+
+    }
+
+    return 0;
+}
+
+
+
+
+void lib(struct book library[5]) {
+    int j = 0;
+    string result = "";
+    int avg;
+    for (int i = 0; i < 5; i++) {
+        avg = 0;
+        for (int j = 0; j < 5; j++) {
+            avg += library[i].score[j];
+        }
+        avg /= 5;
+        if (avg >= 4) {
+            result += library[i].name;
+            result += " \n";
+            result += to_string(library[i].release);
+            result += "\n";
+            j++;
+        }
+
+    }
+    if (j == 0) cout << "нет подходящих книг";
+    cout << result;
+}
+
+string find(struct book library[5]) {
+    string f;
+    cout << "введите имя автора" << endl;
+    cin.ignore();
+    getline(cin, f);
+    string search = "null";
+    for (int i = 0; i < 5; i++) {
+        if (library[i].author.find(f) != -1) {
+            search = library[i].name;
+        }
+
+    }
+    if (search == "null") search = "нет такого автора";
+    return search;
+}
+
+
+
+string fc(struct book library[5]) {
+    int f;
+    cout << "введите номер цвета" << endl << "\n1 - розовый\n2 - голубой\n3 - белый\n4 - черный\n5 - коричневый" << endl;;
+    cin >> f;
+    string search = "null";
+
+    for (int i = 0; i < 5; i++) {
+        if (f == library[i].colo) {
+            search = library[i].name;
+        }
+
+    }
+    return search;
+}
+
+
+/*
+Создать структуру с именем BOOK, содержащую следующие поля:
+• название;
+• год выпуска;
+• автор (строка);
+• цвет обложки (перечисление)
+• оценки (массив из пяти элементов).
+Написать функции:
+• вывода на экран названия и года выпуска книг, у которых средняя оценка не меньше 4,0 (если таких нет,
+вывести соответствующее сообщение).
+• поиска книги по части автора, введенного с клавиатуры
+• поиска книги по цвету обложки (можно вводить число (1-красная, 2-зеленая…))
+В основной программе:
+• создать массив из 5 книг (4 инициализировать, 5ую – ввести с клавиатуры)
+• выполнить для массива написанные функции.
+
+*/
